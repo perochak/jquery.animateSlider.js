@@ -35,7 +35,34 @@
 			{
 				throw new Error("Your broswer does not support CSS3 Animations or Transitions");
 			}
-			
+			// set animations
+                        
+                        var slides = this.$element.children(".anim-slide");
+                        var animations = [];
+                        $(slides).each(function(index,slide){
+                            var slideanimations = {};
+                            $.each($(slide).find('[data-show!=""]'),function(index,value){
+                                     var aclass =  $(value).data('show'); 
+                         
+                                     if(typeof aclass === "string"){
+                                         
+                                         slideanimations["."+$(value).attr("class")]=
+                                        {
+                                             hide:$(value).data('hide'),
+                                             show:$(value).data('show'),
+                                             delayShow:$(value).data('delay')
+                                         };
+                                      
+                                     } else {
+                                        
+                                     }
+                            });
+                            animations.push(slideanimations);
+                            
+                         
+                        });
+                        this.options['animations'] = animations;
+
 			this.config			=	$.extend({},this.defaults,this.options);
 			this.slides			=	this.$element.children(".anim-slide");
 			this.slidesCount	=	this.slides.length;
@@ -117,7 +144,8 @@
 								$next.find(index).addClass(classShow+" "+delayShow+" animated ");
 							}
 						});
-
+                                 // set background image to the ul/container
+                                $('.anim-slider').css('background-image',$($next).data('slideimage'));
 				$next.addClass(" anim-slide-this");
 			    /*=========================================*/ 
 			this.updateDots();
